@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
@@ -13,10 +14,25 @@ interface IRequest {
 
 @injectable()
 class CreateProductService {
-  constructor(private productsRepository: IProductsRepository) {}
+  constructor(
+    @inject('ProductsRepository')
+    private productsRepository: IProductsRepository,
+  ) { }
 
   public async execute({ name, price, quantity }: IRequest): Promise<Product> {
-    // TODO
+    const productsExists = await this.productsRepository.findByName(name);
+
+    if (productsExists) {
+      throw new AppError('There is already one product with this name');
+    }
+
+    const product = await this.productsRepository.create({
+      name,
+      price,
+      quantity,
+    });
+
+    return product;
   }
 }
 
