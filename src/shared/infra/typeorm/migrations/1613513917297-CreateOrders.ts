@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, table } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export default class CreateOrders1613513917297 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
